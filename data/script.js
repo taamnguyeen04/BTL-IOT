@@ -70,6 +70,22 @@ function onMessage(event) {
             desc.innerText = "Thresholds exceeded! Action required.";
         }
     }
+    
+    if (data.tinyml_score !== undefined) {
+        let el = document.getElementById('tinyml-status');
+        document.getElementById('tinyml-score').innerText = parseFloat(data.tinyml_score).toFixed(4);
+        document.getElementById('tinyml-infer').innerText = data.tinyml_infer_ms;
+        
+        if (data.tinyml_anomaly) {
+            el.innerText = "ANOMALY ⚠️";
+            el.style.color = "var(--red)";
+            el.style.textShadow = "0 0 10px rgba(255, 123, 114, 0.5)";
+        } else {
+            el.innerText = "NORMAL ✅";
+            el.style.color = "var(--green)";
+            el.style.textShadow = "0 0 10px rgba(46, 160, 67, 0.5)";
+        }
+    }
 }
 
 function switchTab(tabId) {
@@ -78,6 +94,29 @@ function switchTab(tabId) {
     
     document.getElementById(tabId).classList.add('active');
     event.target.classList.add('active');
+}
+
+let deviceStates = { dev1: false, dev2: false };
+
+function toggleDevice(gpio, devId) {
+    deviceStates[devId] = !deviceStates[devId];
+    let statusStr = deviceStates[devId] ? "ON" : "OFF";
+    
+    let btn = document.getElementById('btn-' + devId);
+    btn.innerText = `Device ${devId === 'dev1' ? '1 (Pin 15)' : '2 (Pin 16)'}: ${statusStr}`;
+    btn.style.background = deviceStates[devId] ? "var(--green)" : "var(--panel)";
+
+    let controlData = {
+        page: "device",
+        value: {
+            gpio: gpio,
+            status: statusStr
+        }
+    };
+
+    if (websocket && websocket.readyState === WebSocket.OPEN) {
+        websocket.send(JSON.stringify(controlData));
+    }
 }
 
 function saveSettings() {
