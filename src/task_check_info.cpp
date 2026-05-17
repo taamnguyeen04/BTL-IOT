@@ -15,12 +15,13 @@ void Load_info_File()
   }
   else
   {
-    AppConfig &config = appConfig();
-    config.wifiSsid = doc["WIFI_SSID"].as<String>();
-    config.wifiPass = doc["WIFI_PASS"].as<String>();
-    config.coreIotToken = doc["CORE_IOT_TOKEN"].as<String>();
+    DeviceConfig config;
+    config.wifiSsid     = doc["WIFI_SSID"].as<String>();
+    config.wifiPass     = doc["WIFI_PASS"].as<String>();
+    config.coreIotToken  = doc["CORE_IOT_TOKEN"].as<String>();
     config.coreIotServer = doc["CORE_IOT_SERVER"].as<String>();
-    config.coreIotPort = doc["CORE_IOT_PORT"].as<String>();
+    config.coreIotPort   = doc["CORE_IOT_PORT"].as<String>();
+    setDeviceConfig(config);
   }
   file.close();
 }
@@ -40,11 +41,11 @@ void Save_info_File(String wifi_ssid, String wifi_pass, String core_iot_token, S
   Serial.println(wifi_pass);
 
   DynamicJsonDocument doc(4096);
-  doc["WIFI_SSID"] = wifi_ssid;
-  doc["WIFI_PASS"] = wifi_pass;
-  doc["CORE_IOT_TOKEN"] = core_iot_token;
+  doc["WIFI_SSID"]       = wifi_ssid;
+  doc["WIFI_PASS"]       = wifi_pass;
+  doc["CORE_IOT_TOKEN"]  = core_iot_token;
   doc["CORE_IOT_SERVER"] = core_iot_server;
-  doc["CORE_IOT_PORT"] = core_iot_port;
+  doc["CORE_IOT_PORT"]   = core_iot_port;
 
   File configFile = LittleFS.open("/info.dat", "w");
   if (configFile)
@@ -70,9 +71,8 @@ bool check_info_File(bool check)
     }
     Load_info_File();
   }
-  
-  AppConfig &config = appConfig();
-  if (config.wifiSsid.isEmpty() && config.wifiPass.isEmpty())
+
+  if (!hasWifiCredentials())
   {
     if (!check)
     {

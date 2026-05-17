@@ -10,7 +10,7 @@ void startAP()
 
 void startSTA()
 {
-    AppConfig &config = appConfig();
+    const DeviceConfig config = getDeviceConfig();
     if (config.wifiSsid.isEmpty())
     {
         vTaskDelete(NULL);
@@ -29,10 +29,11 @@ void startSTA()
 
     while (WiFi.status() != WL_CONNECTED)
     {
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
-    //Give a semaphore here
-    xSemaphoreGive(internetSemaphore());
+
+    // This semaphore releases network-dependent tasks (CoreIOT) after Wi-Fi connects.
+    xSemaphoreGive(internetConnectedSemaphore());
 }
 
 bool Wifi_reconnect()

@@ -1,4 +1,5 @@
 #include <task_handler.h>
+#include <task_webserver.h>
 
 void handleWebSocketMessage(String message)
 {
@@ -51,11 +52,9 @@ void handleWebSocketMessage(String message)
         Serial.println("SERVER: " + core_iot_server);
         Serial.println("PORT: " + core_iot_port);
 
-        // 👉 Gọi hàm lưu cấu hình
         Save_info_File(wifi_ssid, wifi_pass, core_iot_token, core_iot_server, core_iot_port);
 
-        // Phản hồi lại client (tùy chọn)
         String msg = "{\"status\":\"ok\",\"page\":\"setting_saved\"}";
-        ws.textAll(msg);
+        Webserver_sendata(msg);
     }
 }
