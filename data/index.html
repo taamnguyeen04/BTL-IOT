@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YoloUNO IoT Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>YoloUNO RTOS System</h1>
+    <p class="subtitle">Real-time FreeRTOS Monitor & Device Configuration</p>
+
+    <!-- Navigation -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+        <button class="tab-btn" onclick="switchTab('settings')">Settings</button>
+    </div>
+
+    <!-- Dashboard Tab -->
+    <div id="dashboard" class="tab-content active">
+        <div class="section-title">Live Sensors</div>
+        <div class="dashboard-grid">
+            <!-- Temperature -->
+            <div class="panel gauge-card">
+                <div class="card-eyebrow">Temp Channel</div>
+                <div class="gauge">
+                    <svg viewBox="0 0 180 180">
+                        <circle class="track" cx="90" cy="90" r="70" stroke-dasharray="330 440" transform="rotate(135 90 90)" />
+                        <circle id="temp-gauge" class="progress temp-prog" cx="90" cy="90" r="70" transform="rotate(135 90 90)" />
+                    </svg>
+                    <div class="gauge-data">
+                        <span class="value" id="temp-val">--</span><span class="unit">°C</span>
+                    </div>
+                </div>
+                <div class="label">Temperature</div>
+            </div>
+
+            <!-- Humidity -->
+            <div class="panel gauge-card">
+                <div class="card-eyebrow">Humi Channel</div>
+                <div class="gauge">
+                    <svg viewBox="0 0 180 180">
+                        <circle class="track" cx="90" cy="90" r="70" stroke-dasharray="330 440" transform="rotate(135 90 90)" />
+                        <circle id="humi-gauge" class="progress humi-prog" cx="90" cy="90" r="70" transform="rotate(135 90 90)" />
+                    </svg>
+                    <div class="gauge-data">
+                        <span class="value" id="humi-val">--</span><span class="unit">%</span>
+                    </div>
+                </div>
+                <div class="label">Humidity</div>
+            </div>
+            
+            <!-- System State -->
+            <div class="panel state-card">
+                <div class="card-eyebrow">LCD State Machine</div>
+                <div class="state-value" id="system-state">UNKNOWN</div>
+                <div class="state-desc" id="system-desc">Waiting for data...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settings" class="tab-content">
+        <div class="section-title">Device Configuration</div>
+        <div class="panel config-card">
+            <form id="config-form">
+                <div class="input-group">
+                    <label>WiFi SSID</label>
+                    <input type="text" id="wifi_ssid" placeholder="Enter WiFi Name">
+                </div>
+                <div class="input-group">
+                    <label>WiFi Password</label>
+                    <input type="password" id="wifi_pass" placeholder="Enter WiFi Password">
+                </div>
+                <hr class="divider">
+                <div class="input-group">
+                    <label>CoreIOT Token</label>
+                    <input type="text" id="core_iot_token" placeholder="Device Token">
+                </div>
+                <div class="input-group">
+                    <label>CoreIOT Server</label>
+                    <input type="text" id="core_iot_server" placeholder="app.coreiot.io" value="app.coreiot.io">
+                </div>
+                <div class="input-group">
+                    <label>CoreIOT Port</label>
+                    <input type="number" id="core_iot_port" placeholder="1883" value="1883">
+                </div>
+                <button type="button" class="btn btn-save" onclick="saveSettings()">Save & Reboot</button>
+                <div id="save-status" class="status-msg"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="connection-status">Connecting to YoloUNO...</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
