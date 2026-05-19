@@ -1,0 +1,12 @@
+{
+  "status": "succeeded",
+  "current_step": "done",
+  "raw_input": "sensor_data.csv",
+  "normalized_csv": "artifacts/retrain/normalized.csv",
+  "prepared_dir": "artifacts/retrain/dataset",
+  "model_path": "artifacts/retrain/tinyml_model.keras",
+  "metrics_path": "artifacts/retrain/metrics.json",
+  "header_path": "artifacts/retrain/dht_anomaly_model.h",
+  "suggested_model_version": "tinyml_dht_v2",
+  "status_path": "artifacts/retrain/job_status.json"
+}

@@ -21,6 +21,8 @@ void startActuatorServices() {
   config.wifiSsid = String(DEVICE_WIFI_SSID);
   config.wifiPass = String(DEVICE_WIFI_PASS);
   config.coreIotToken = String(DEVICE_CORE_IOT_TOKEN);
+  config.coreIotServer = String(DEVICE_CORE_IOT_SERVER);
+  config.coreIotPort = String(DEVICE_CORE_IOT_PORT);
   setDeviceConfig(config);
 
   WiFi.mode(WIFI_STA);
@@ -54,6 +56,7 @@ void setup()
   delay(1500);
   Serial.println("[Setup] Boot start");
   Serial.printf("[Setup] Firmware Version: %s\n", getFirmwareVersion().c_str());
+  Serial.printf("[Setup] TinyML Model Version: %s\n", getTinyMLModelVersion());
 
 #if defined(DEVICE_ROLE_ACTUATOR)
   startActuatorServices();
@@ -70,7 +73,6 @@ void setup()
   xTaskCreate(coreiot_task, "CoreIOT Task", 6144, NULL, 2, NULL);
 #endif
 }
-
 void loop()
 {
 #if defined(DEVICE_ROLE_ACTUATOR)
