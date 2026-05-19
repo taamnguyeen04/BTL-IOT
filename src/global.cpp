@@ -160,6 +160,10 @@ bool hasWifiCredentials() {
   return !config.wifiSsid.isEmpty() || !config.wifiPass.isEmpty();
 }
 
+String getFirmwareVersion() {
+  return "sensor_fw_tinyml_baseline_v2";
+}
+
 // ============================================================
 //  LCD display state helpers (Task 3)
 // ============================================================
